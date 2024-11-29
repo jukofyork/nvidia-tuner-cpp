@@ -38,7 +38,6 @@ The fan speed between the given temperature and fan speed pairs is linearly inte
 ```service
 [Unit]
 Description=nvidia-tuner
-After=graphical.target
 
 [Service]
 Type=oneshot

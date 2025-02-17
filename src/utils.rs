@@ -11,7 +11,7 @@ pub fn validate_fan_speed_update_period(
 )-> Result<u64, String> {
     let period: u64 = value.parse::<u64>().map_err(|e| format!("Failed to parse fan speed update period from '{}': {}", value, e))?;
     if period > MAX_FAN_SPEED_UPDATE_PERIOD {
-        Err(format!("Fan speed update period exceeds limit of {}: {}", MAX_FAN_SPEED_UPDATE_PERIOD, period))
+        Err(format!("Fan speed update period exceeds limit of {}", MAX_FAN_SPEED_UPDATE_PERIOD))
     } else {
         Ok(period)
     }

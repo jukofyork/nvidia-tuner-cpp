@@ -23,7 +23,7 @@ Show all possible options:
 
 Usage example:
 ```bash
-./nvidia-tuner ---core-clock-offset 150 --memory-clock-offset 800 --power-limit 180 --pairs 50:30,70:40,90:60,100:100
+./nvidia-tuner --core-clock-offset 150 --memory-clock-offset 800 --power-limit 180 --pairs 50:30,70:40,90:60,100:100
 ```
 
 This command takes temperature and fan speed pairs as an argument. In this example the fan speed will be 30% up to 50°C and 100% above 100°C.

@@ -111,4 +111,4 @@ The PI controller uses two main parameters:
 * **Proportional Gain (-p)**: Controls immediate response to temperature changes. Higher values = faster response but may cause oscillation.
 * **Integral Gain (-i)**: Eliminates steady-state temperature error. Higher values = better accuracy but may cause instability.
 
-Default values (2.0 and 0.1) work well for most GPUs, but you can experiment with different values if needed.
+Default values (4.0 and 0.2) work well for most GPUs, but you can experiment with different values if needed.

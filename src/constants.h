@@ -5,11 +5,11 @@ constexpr int MAJOR_MIN_VERSION = 520;
 constexpr unsigned int MAX_FAN_SPEED = 100;                  // %
 constexpr unsigned int MAX_TEMPERATURE = 100;                // °C
 
-constexpr float DEFAULT_PROPORTIONAL_GAIN = 1.5f;
+constexpr float DEFAULT_PROPORTIONAL_GAIN = 4.0f;
 constexpr float MIN_PROPORTIONAL_GAIN = 0.1f;
 constexpr float MAX_PROPORTIONAL_GAIN = 10.0f;
 
-constexpr float DEFAULT_INTEGRAL_GAIN = 0.05f;
+constexpr float DEFAULT_INTEGRAL_GAIN = 0.2f;
 constexpr float MIN_INTEGRAL_GAIN = 0.01f;
 constexpr float MAX_INTEGRAL_GAIN = 1.0f;
 

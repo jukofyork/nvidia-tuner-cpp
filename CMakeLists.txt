@@ -40,9 +40,10 @@ message(STATUS "Found NVML include dir: ${NVML_INCLUDE_DIR}")
 
 add_executable(nvidia-tuner
     src/main.cpp
-    src/gpu_device.cpp
-    src/utils.cpp
     src/cli.cpp
+    src/gpu_device.cpp
+    src/temperature_controller.cpp
+    src/utils.cpp
 )
 
 target_include_directories(nvidia-tuner PRIVATE 

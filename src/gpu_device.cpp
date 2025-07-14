@@ -52,6 +52,16 @@ void NvmlDevice::set_memory_clock_offset(int offset) {
     }
 }
 
+void NvmlDevice::set_max_core_clock(unsigned int clock) {
+    check_nvml_error(nvmlDeviceSetGpuLockedClocks(handle, 0, clock),
+                    "set maximum core clock");
+}
+
+void NvmlDevice::set_max_memory_clock(unsigned int clock) {
+    check_nvml_error(nvmlDeviceSetMemoryLockedClocks(handle, 0, clock),
+                    "set maximum memory clock");
+}
+
 void NvmlDevice::set_power_limit(unsigned int limit) {
     check_nvml_error(nvmlDeviceSetPowerManagementLimit(handle, limit * 1000), 
                     "set power limit");
@@ -154,25 +164,29 @@ void NvmlDevice::panic_handler() {
 void NvmlDevice::setup_cleanup() {
     cleanup_device = shared_from_this();
     
-    // Set up signal handlers for various termination signals
-    std::signal(SIGINT, cleanup_handler);
-    std::signal(SIGTERM, cleanup_handler);
-    std::signal(SIGHUP, cleanup_handler);
-    std::signal(SIGALRM, cleanup_handler);
-    std::signal(SIGIO, cleanup_handler);
-    std::signal(SIGPIPE, cleanup_handler);
-    std::signal(SIGPROF, cleanup_handler);
-    std::signal(SIGUSR1, cleanup_handler);
-    std::signal(SIGUSR2, cleanup_handler);
-    std::signal(SIGVTALRM, cleanup_handler);
+    // Set up signal handlers for various termination signals (only once)
+    static bool handlers_set = false;
+    if (!handlers_set) {
+        std::signal(SIGINT, cleanup_handler);
+        std::signal(SIGTERM, cleanup_handler);
+        std::signal(SIGHUP, cleanup_handler);
+        std::signal(SIGALRM, cleanup_handler);
+        std::signal(SIGIO, cleanup_handler);
+        std::signal(SIGPIPE, cleanup_handler);
+        std::signal(SIGPROF, cleanup_handler);
+        std::signal(SIGUSR1, cleanup_handler);
+        std::signal(SIGUSR2, cleanup_handler);
+        std::signal(SIGVTALRM, cleanup_handler);
 
-    // Ignore stop signals
-    std::signal(SIGTSTP, SIG_IGN);
-    std::signal(SIGTTIN, SIG_IGN);
-    std::signal(SIGTTOU, SIG_IGN);
-    
-    // Set terminate handler for exceptions
-    std::set_terminate(panic_handler);
+        // Ignore stop signals
+        std::signal(SIGTSTP, SIG_IGN);
+        std::signal(SIGTTIN, SIG_IGN);
+        std::signal(SIGTTOU, SIG_IGN);
+
+        // Set terminate handler for exceptions
+        std::set_terminate(panic_handler);
+        handlers_set = true;
+    }
 }
 
 void check_nvml_error(nvmlReturn_t result, const std::string& operation) {

@@ -23,6 +23,8 @@ public:
     
     void set_core_clock_offset(int offset);
     void set_memory_clock_offset(int offset);
+    void set_max_core_clock(unsigned int clock);
+    void set_max_memory_clock(unsigned int clock);
     void set_power_limit(unsigned int limit);
     unsigned int get_temperature();
     void set_fan_speed(unsigned int speed);

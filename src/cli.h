@@ -8,6 +8,8 @@ struct Cli {
     std::optional<int> core_clock_offset;
     std::optional<int> memory_clock_offset;
     std::optional<unsigned int> power_limit;
+    std::optional<unsigned int> max_core_clock;
+    std::optional<unsigned int> max_memory_clock;
     std::optional<std::string> pairs;
     unsigned int fan_speed_update_period = 2;
     unsigned int temperature_hysteresis = 5;

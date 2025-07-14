@@ -35,7 +35,15 @@ int main(int argc, char* argv[]) {
         if (cli.memory_clock_offset.has_value()) {
             device->set_memory_clock_offset(cli.memory_clock_offset.value());
         }
-        
+
+        if (cli.max_core_clock.has_value()) {
+            device->set_max_core_clock(cli.max_core_clock.value());
+        }
+
+        if (cli.max_memory_clock.has_value()) {
+            device->set_max_memory_clock(cli.max_memory_clock.value());
+        }
+
         if (cli.power_limit.has_value()) {
             device->set_power_limit(cli.power_limit.value());
         }

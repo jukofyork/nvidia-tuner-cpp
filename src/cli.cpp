@@ -26,6 +26,12 @@ Cli CliParser::parse(int argc, char* argv[]) {
         } else if (arg == "-m" || arg == "--memory-clock-offset") {
             if (++i >= argc) throw std::runtime_error("Missing value for memory-clock-offset");
             cli.memory_clock_offset = std::stoi(argv[i]);
+        } else if (arg == "-C" || arg == "--max-core-clock") {
+            if (++i >= argc) throw std::runtime_error("Missing value for max-core-clock");
+            cli.max_core_clock = std::stoul(argv[i]);
+        } else if (arg == "-M" || arg == "--max-memory-clock") {
+            if (++i >= argc) throw std::runtime_error("Missing value for max-memory-clock");
+            cli.max_memory_clock = std::stoul(argv[i]);
         } else if (arg == "-l" || arg == "--power-limit") {
             if (++i >= argc) throw std::runtime_error("Missing value for power-limit");
             cli.power_limit = std::stoul(argv[i]);
@@ -57,6 +63,8 @@ void CliParser::print_help(const std::string& program_name) {
     std::cout << "    -i, --index <INDEX>                  GPU index [default: 0]\n";
     std::cout << "    -c, --core-clock-offset <OFFSET>     Core clock offset (MHz)\n";
     std::cout << "    -m, --memory-clock-offset <OFFSET>   Memory clock offset (MHz)\n";
+    std::cout << "    -C, --max-core-clock <CLOCK>         Maximum boost core clock (MHz)\n";
+    std::cout << "    -M, --max-memory-clock <CLOCK>       Maximum boost memory clock (MHz)\n";
     std::cout << "    -l, --power-limit <LIMIT>            Power limit (W)\n";
     std::cout << "    -p, --pairs <PAIRS>                  Temperature (°C) and fan speed (%) pairs\n";
     std::cout << "                                         Format: temp1:fan1,temp2:fan2,...\n";

@@ -65,18 +65,8 @@ int main(int argc, char* argv[]) {
 
             while (true) {
                 unsigned int temperature = device->get_temperature();
-
-                // Bounds check for temperature reading - exit on invalid values
-                if (temperature > MAX_TEMPERATURE) {
-                    std::cerr << "Error: Invalid temperature reading (" << temperature
-                              << "°C) - this indicates a sensor or driver problem." << std::endl;
-                    std::cerr << "Exiting to prevent unsafe fan control. GPU will revert to automatic fan control." << std::endl;
-                    break;  // This will trigger cleanup and exit
-                }
-
                 unsigned int fan_speed = controller.calculate_fan_speed(temperature);
                 device->set_fan_speed(fan_speed);
-                
                 std::this_thread::sleep_for(std::chrono::seconds(cli.fan_speed_update_period));
             }
         }

@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <cmath>
 
-TemperatureController::TemperatureController(float target, float p_gain, float i_gain, float sample_time, float baseline)
-    : target_temp(target), kp(p_gain), ki(i_gain), dt(sample_time), baseline_fan_speed(baseline) {}
+TemperatureController::TemperatureController(float target, float p_gain, float i_gain, float sample_time)
+    : target_temp(target), kp(p_gain), ki(i_gain), dt(sample_time) {}
 
 unsigned int TemperatureController::calculate_fan_speed(float current_temp) {
     float error = current_temp - target_temp;
@@ -17,11 +17,11 @@ unsigned int TemperatureController::calculate_fan_speed(float current_temp) {
     float i_term = ki * integral_error;
 
     // Combine terms
-    float output = baseline_fan_speed + p_term + i_term;
+    float output = static_cast<float>(MIN_FAN_SPEED) + p_term + i_term;
 
     // Anti-windup: clamp through integral term
+    const float lower = static_cast<float>(MIN_FAN_SPEED);
     const float upper = static_cast<float>(MAX_FAN_SPEED);
-    const float lower = baseline_fan_speed;
 
     if (output > upper && ki > 0.0f) {
         float excess = output - upper;

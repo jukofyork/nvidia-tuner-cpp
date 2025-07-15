@@ -69,14 +69,14 @@ void CliParser::print_help(const std::string& program_name) {
     std::cout << "    -C, --max-core-clock <CLOCK>         Maximum boost core clock (MHz)\n";
     std::cout << "    -M, --max-memory-clock <CLOCK>       Maximum boost memory clock (MHz)\n";
     std::cout << "    -l, --power-limit <LIMIT>            Power limit (W)\n";
-    std::cout << "    -t, --target-temperature <TEMP>      Target temperature for PID control (°C) ["
+    std::cout << "    -t, --target-temperature <TEMP>      Target temperature for PI control (°C) ["
               << MIN_TARGET_TEMPERATURE << "-" << MAX_TARGET_TEMPERATURE << "]\n";
     std::cout << "    -f, --fan-speed-update-period <SEC>  Fan speed update period (s) [default: "
               << DEFAULT_FAN_SPEED_UPDATE_PERIOD << ", range: " << MIN_FAN_SPEED_UPDATE_PERIOD
               << "-" << MAX_FAN_SPEED_UPDATE_PERIOD << "]\n";
-    std::cout << "    -p, --proportional-gain <GAIN>       PID proportional gain [default: "
+    std::cout << "    -p, --proportional-gain <GAIN>       PI proportional gain [default: "
               << DEFAULT_PROPORTIONAL_GAIN << "]\n";
-    std::cout << "    -i, --integral-gain <GAIN>           PID integral gain [default: "
+    std::cout << "    -i, --integral-gain <GAIN>           PI integral gain [default: "
               << DEFAULT_INTEGRAL_GAIN << "]\n";
 }
 

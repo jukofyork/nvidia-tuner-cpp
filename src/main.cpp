@@ -49,7 +49,7 @@ int main(int argc, char* argv[]) {
             device->set_power_limit(cli.power_limit.value());
         }
         
-        // PID temperature control
+        // PI temperature control
         if (cli.target_temperature.has_value()) {
             TemperatureController controller(
                 cli.target_temperature.value(),
@@ -60,7 +60,7 @@ int main(int argc, char* argv[]) {
             
             device->setup_cleanup();
             
-            std::cout << "Starting PID temperature control (target: "
+            std::cout << "Starting PI temperature control (target: "
                       << cli.target_temperature.value() << "°C)" << std::endl;
 
             while (true) {

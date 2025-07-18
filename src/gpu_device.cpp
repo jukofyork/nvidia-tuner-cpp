@@ -97,12 +97,12 @@ unsigned int NvmlDevice::get_num_fans() {
 }
 
 unsigned int NvmlDevice::get_fan_speed() {
-    typedef nvmlReturn_t (*nvmlDeviceGetTargetFanSpeed_t)(nvmlDevice_t, unsigned int, unsigned int*);
-    static nvmlDeviceGetTargetFanSpeed_t func = nullptr;
+    typedef nvmlReturn_t (*nvmlDeviceGetFanSpeed_v2_t)(nvmlDevice_t, unsigned int, unsigned int*);
+    static nvmlDeviceGetFanSpeed_v2_t func = nullptr;
     static bool checked = false;
 
     if (!checked) {
-        func = (nvmlDeviceGetTargetFanSpeed_t)dlsym(RTLD_DEFAULT, "nvmlDeviceGetTargetFanSpeed");
+        func = (nvmlDeviceGetFanSpeed_v2_t)dlsym(RTLD_DEFAULT, "nvmlDeviceGetFanSpeed_v2");
         checked = true;
     }
 
@@ -121,7 +121,7 @@ unsigned int NvmlDevice::get_fan_speed() {
 
         return max_speed_across_fans;
     } else {
-        throw std::runtime_error("nvmlDeviceGetTargetFanSpeed function not available in your NVML version");
+        throw std::runtime_error("nvmlDeviceGetFanSpeed_v2 function not available in your NVML version");
     }
 }
 

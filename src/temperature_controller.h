@@ -1,20 +1,25 @@
 #pragma once
 
-#include "constants.h"
-
 class TemperatureController {
 private:
-    float target_temp;
-    float kp;  // Proportional gain
-    float ki;  // Integral gain
-    float integral_error = 0.0f;
-    float dt;  // Sample time in seconds
+    const unsigned int target_temp;    // Target temperature (°C)
+    const unsigned int min_fan_speed;  // Minimum fan speed (%)
+    const unsigned int max_fan_speed;  // Maximum fan speed (%)
+    const float kp;                    // Proportional gain
+    const float ki;                    // Integral gain
+    const float dt;                    // Sample time (seconds)
+
+    float integral_error;
 
 public:
-    TemperatureController(float target, float p_gain, float i_gain, float sample_time);
+    TemperatureController(unsigned int current_temp,
+                          unsigned int current_fan_speed,
+                          unsigned int target_temp,
+                          unsigned int min_fan_speed,
+                          unsigned int max_fan_speed,
+                          float kp,
+                          float ki,
+                          float dt);
 
-    unsigned int calculate_fan_speed(float current_temp);
-    void reset();
-    void set_target_temperature(float target);
-    float get_target_temperature() const;
+    unsigned int calculate_fan_speed(unsigned int current_temp);
 };

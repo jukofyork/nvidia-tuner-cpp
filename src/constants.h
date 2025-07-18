@@ -17,5 +17,5 @@ constexpr float MIN_PROPORTIONAL_GAIN = 0.1f;
 constexpr float MAX_PROPORTIONAL_GAIN = 10.0f;
 
 constexpr float DEFAULT_INTEGRAL_GAIN = 0.2f;
-constexpr float MIN_INTEGRAL_GAIN = 0.01f;
+constexpr float MIN_INTEGRAL_GAIN = 0.0f;
 constexpr float MAX_INTEGRAL_GAIN = 1.0f;

@@ -27,6 +27,7 @@ public:
     void set_max_memory_clock(unsigned int clock);
     void set_power_limit(unsigned int limit);
     unsigned int get_temperature();
+    unsigned int get_fan_speed();
     void set_fan_speed(unsigned int speed);
     void set_default_fan_speed();
     void setup_cleanup();

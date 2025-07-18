@@ -45,7 +45,8 @@ void NvmlDevice::set_memory_clock_offset(int offset) {
     }
     
     if (func) {
-        nvmlReturn_t result = func(handle, offset);
+        // NOTE: The actual offset in MHz is 2x the offset we pass in for some reason
+        nvmlReturn_t result = func(handle, 2 * offset);
         check_nvml_error(result, "set memory clock offset");
     } else {
         throw std::runtime_error("nvmlDeviceSetMemClkVfOffset function not available in your NVML version");
@@ -95,20 +96,49 @@ unsigned int NvmlDevice::get_num_fans() {
     }
 }
 
+unsigned int NvmlDevice::get_fan_speed() {
+    typedef nvmlReturn_t (*nvmlDeviceGetTargetFanSpeed_t)(nvmlDevice_t, unsigned int, unsigned int*);
+    static nvmlDeviceGetTargetFanSpeed_t func = nullptr;
+    static bool checked = false;
+
+    if (!checked) {
+        func = (nvmlDeviceGetTargetFanSpeed_t)dlsym(RTLD_DEFAULT, "nvmlDeviceGetTargetFanSpeed");
+        checked = true;
+    }
+
+    if (func) {
+        unsigned int max_speed_across_fans = 0;
+
+        // Get the highest fan speed across all fans
+        unsigned int num_fans = get_num_fans();
+        for (unsigned int fan = 0; fan < num_fans; ++fan) {
+            unsigned int speed;
+            check_nvml_error(func(handle, fan, &speed), "get fan speed");
+            if (speed > max_speed_across_fans) {
+                max_speed_across_fans = speed;
+            }
+        }
+
+        return max_speed_across_fans;
+    } else {
+        throw std::runtime_error("nvmlDeviceGetTargetFanSpeed function not available in your NVML version");
+    }
+}
+
 void NvmlDevice::set_fan_speed(unsigned int speed) {
     if (fan_speed_state->default_set.load()) {
         return;
     }
-    
+
     typedef nvmlReturn_t (*nvmlDeviceSetFanSpeed_v2_t)(nvmlDevice_t, unsigned int, unsigned int);
     static nvmlDeviceSetFanSpeed_v2_t func = nullptr;
     static bool checked = false;
-    
+
     if (!checked) {
         func = (nvmlDeviceSetFanSpeed_v2_t)dlsym(RTLD_DEFAULT, "nvmlDeviceSetFanSpeed_v2");
         checked = true;
     }
-    
+
     if (func) {
         unsigned int num_fans = get_num_fans();
         for (unsigned int fan = 0; fan < num_fans; ++fan) {

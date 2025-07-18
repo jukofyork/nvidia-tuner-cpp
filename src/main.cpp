@@ -8,6 +8,7 @@
 #include "gpu_device.h"
 #include "temperature_controller.h"
 #include "utils.h"
+#include "constants.h"
 
 int main(int argc, char* argv[]) {
     try {
@@ -51,8 +52,16 @@ int main(int argc, char* argv[]) {
         
         // PI temperature control
         if (cli.target_temperature.has_value()) {
+            // Get current state for controller initialization
+            unsigned int current_temp = device->get_temperature();
+            unsigned int current_fan_speed = device->get_fan_speed();
+
             TemperatureController controller(
+                current_temp,
+                current_fan_speed,
                 cli.target_temperature.value(),
+                MIN_FAN_SPEED,
+                MAX_FAN_SPEED,
                 cli.proportional_gain,
                 cli.integral_gain,
                 static_cast<float>(cli.fan_speed_update_period)

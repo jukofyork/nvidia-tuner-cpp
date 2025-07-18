@@ -64,8 +64,8 @@ void CliParser::print_help(const std::string& program_name) {
     std::cout << "    -h, --help                           Print help information\n";
     std::cout << "    -V, --version                        Print version information\n";
     std::cout << "    -g, --gpu-index <INDEX>              GPU index [default: 0]\n";
-    std::cout << "    -c, --core-clock-offset <OFFSET>     Core clock offset (MHz)\n";
-    std::cout << "    -m, --memory-clock-offset <OFFSET>   Memory clock offset (MHz)\n";
+    std::cout << "    -c, --core-clock-offset <OFFSET>     Core clock offset for undervolting (MHz)\n";
+    std::cout << "    -m, --memory-clock-offset <OFFSET>   Memory clock offset for overclocking (MHz)\n";
     std::cout << "    -C, --max-core-clock <CLOCK>         Maximum boost core clock (MHz)\n";
     std::cout << "    -M, --max-memory-clock <CLOCK>       Maximum boost memory clock (MHz)\n";
     std::cout << "    -l, --power-limit <LIMIT>            Power limit (W)\n";
@@ -82,6 +82,16 @@ void CliParser::print_help(const std::string& program_name) {
 
 void CliParser::print_version() {
     std::cout << "nvidia-tuner-cpp 0.1.0\n";
+}
+
+unsigned int CliParser::validate_target_temperature(const std::string& value) {
+    unsigned int temp = std::stoul(value);
+    if (temp < MIN_TARGET_TEMPERATURE || temp > MAX_TARGET_TEMPERATURE) {
+        throw std::runtime_error("Target temperature must be between " +
+                                std::to_string(MIN_TARGET_TEMPERATURE) + "°C and " +
+                                std::to_string(MAX_TARGET_TEMPERATURE) + "°C");
+    }
+    return temp;
 }
 
 unsigned int CliParser::validate_fan_speed_update_period(const std::string& value) {
@@ -112,14 +122,4 @@ float CliParser::validate_integral_gain(const std::string& value) {
                                 std::to_string(MAX_INTEGRAL_GAIN));
     }
     return gain;
-}
-
-float CliParser::validate_target_temperature(const std::string& value) {
-    float temp = std::stof(value);
-    if (temp < MIN_TARGET_TEMPERATURE || temp > MAX_TARGET_TEMPERATURE) {
-        throw std::runtime_error("Target temperature must be between " +
-                                std::to_string(MIN_TARGET_TEMPERATURE) + "°C and " +
-                                std::to_string(MAX_TARGET_TEMPERATURE) + "°C");
-    }
-    return temp;
 }
